@@ -20,7 +20,7 @@ class QuoteCache:
         base_currency: str,
     ) -> None:
         """Getting quotes from the Exchangerate API and writing them to the local database"""
-        _key = '8DPjyzwkvzBvA5ozDHWHOimfXa8qa33W'
+        _key = 'BF178aNPAdfPW6YjqbYGL5CmztO4qLNY'
 
         # url = f'{API_URL}/list?access_key={_key}'
         # print(url)
