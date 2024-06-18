@@ -61,6 +61,29 @@ def main_menu(ctx):
     if action == 0:
         convert_menu(ctx)
 
+@clear_screen
+def connect_path_menu(ctx):
+    question = "Connect to a database. Enter the path:"
+    db_path = survey.routines.input(question)
+
+    ctx.db_path = db_path
+
+
+@clear_screen
+def connect_menu(ctx):
+    question = "Connect to a database. Choose an option:"
+    
+    options = (
+        "File",
+        "ADB device",
+    )
+
+    action = survey.routines.select(question, options=options, index=0)
+    if action == 0:
+        connect_path_menu(ctx)
+    else:
+        pass
+
 
 def close_session(sync: SyncManager) -> None:
     if sync.device is not None:
@@ -166,5 +189,7 @@ def run_tui(db_path: str | None) -> None:
         cli._unarchive(account_name, get_db())
 
     ctx = Context()
+
+    connect_menu(ctx)
 
     main_menu(ctx)
