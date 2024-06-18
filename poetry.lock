@@ -930,17 +930,18 @@ diagrams = ["jinja2", "railroad-diagrams"]
 
 [[package]]
 name = "pytermgui"
-version = "7.2.0"
+version = "7.7.1"
 description = "Python TUI framework with mouse support, modular widget system, customizable and rapid terminal markup language and more!"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pytermgui-7.2.0-py3-none-any.whl", hash = "sha256:1d6856b10705793e17bc0527cc04da4cdeb00b6ca79437f1a43cfe56b9c46cf8"},
-    {file = "pytermgui-7.2.0.tar.gz", hash = "sha256:bec500e07b76456980b9e28994523b273e17dd70d923a0767e76ff7f7f2ce5f7"},
+    {file = "pytermgui-7.7.1-py3-none-any.whl", hash = "sha256:d09d2bd77164191bd60e0286414f66ca660ef6f6636f1f0f5f55dc3d3dbc6105"},
+    {file = "pytermgui-7.7.1.tar.gz", hash = "sha256:030458be5c3cbeaab17fb9aa3d19e6232be4ce4a3f54418fe13bb97fdef446db"},
 ]
 
 [package.dependencies]
 typing-extensions = "*"
+wcwidth = "*"
 
 [package.extras]
 yaml = ["pyyaml"]
@@ -1119,6 +1120,20 @@ decorator = ">=3.4.2"
 py = ">=1.4.26,<2.0.0"
 
 [[package]]
+name = "survey"
+version = "5.3.1"
+description = "A simple library for creating beautiful interactive prompts."
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "survey-5.3.1-py3-none-any.whl", hash = "sha256:427922df24ff4fd9a51be6f2e8b479e52d1a96d3707cd692a47da7ebe3319ac5"},
+    {file = "survey-5.3.1.tar.gz", hash = "sha256:b8dc7c223dbc2e2f50423abf4ba38fe647edd8af290eed8dc812ba04fff1730f"},
+]
+
+[package.extras]
+docs = ["sphinx", "sphinx-autodoc-typehints (<1.25.3)", "sphinx-paramlinks", "sphinx-rtd-theme"]
+
+[[package]]
 name = "toml"
 version = "0.10.2"
 description = "Python Library for Tom's Obvious, Minimal Language"
@@ -1193,6 +1208,17 @@ secure = ["certifi", "cryptography (>=1.3.4)", "idna (>=2.0.0)", "ipaddress", "p
 socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 
 [[package]]
+name = "wcwidth"
+version = "0.2.13"
+description = "Measures the displayed width of unicode strings in a terminal"
+optional = false
+python-versions = "*"
+files = [
+    {file = "wcwidth-0.2.13-py2.py3-none-any.whl", hash = "sha256:3da69048e4540d84af32131829ff948f1e022c1c6bdb8d6102117aac784f6859"},
+    {file = "wcwidth-0.2.13.tar.gz", hash = "sha256:72ea0c06399eb286d978fdedb6923a9eb47e1c486ce63e9b4e64fc18303972b5"},
+]
+
+[[package]]
 name = "whichcraft"
 version = "0.6.1"
 description = "This package provides cross-platform cross-python shutil.which functionality."
@@ -1228,4 +1254,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.10"
-content-hash = "4ba07be2e7e6aab9c4ae4c15bf1d31e9265d6e793e7af4a59eede4990dbfc7dc"
+content-hash = "1f0536aaca78e7bef8c2f40759a5f9776e3d4bc854c3dc1855f52ae834266703"
