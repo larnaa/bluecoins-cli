@@ -1,9 +1,6 @@
-from dataclasses import dataclass
-import functools
 import sqlite3 as lite
 import sys
 from functools import partial
-from typing import Any
 
 from pytermgui.file_loaders import YamlLoader
 from pytermgui.widgets import Label
@@ -12,83 +9,32 @@ from pytermgui.widgets.containers import Container
 from pytermgui.widgets.input_field import InputField
 from pytermgui.window_manager.manager import WindowManager
 from pytermgui.window_manager.window import Window
-import survey
 
 import cluecoins.cli as cli
 from cluecoins.database import get_accounts_list
 from cluecoins.database import get_archived_accounts
 from cluecoins.sync_manager import SyncManager
 
+PYTERMGUI_CONFIG = """
+config:
+    InputField:
+        styles:
+            prompt: dim italic
+            cursor: '@72'
+    Label:
+        styles:
+            value: dim bold
 
-import os
+    Window:
+        styles:
+            border: '60'
+            corner: '60'
 
-
-@dataclass
-class Context:
-    db_path: str | None = None
-
-
-def clear_screen(fn: Any) -> Any:
-
-    @functools.wraps(fn)
-    def wrapper(*args, **kwargs):
-        command = 'cls' if os.name == 'nt' else 'clear'
-        os.system(command)
-        return fn(*args, **kwargs)
-
-    return wrapper
-
-@clear_screen
-def convert_menu(ctx):
-    question = "Convert menu. Enter the base currency:"
-    base_currency = survey.routines.input(question)
-
-    cli._convert(base_currency, ctx.db_path)
-
-
-@clear_screen
-def main_menu(ctx):
-    question = "Main menu. Choose an option:"
-    options = (
-        "Convert",
-        "Archive",
-        "Unarchive",
-        "Exit",
-    )
-
-    action = survey.routines.select(question, options=options, index=0)
-
-    if action == 0:
-        convert_menu(ctx)
-
-@clear_screen
-def connect_path_menu(ctx):
-    question = "Connect to a database. Enter the path:"
-    db_path = survey.routines.input(question)
-
-    ctx.db_path = db_path
-
-
-@clear_screen
-def connect_menu(ctx):
-    question = "Connect to a database. Choose an option:"
-    
-    options = (
-        "File",
-        "ADB device",
-    )
-
-    action = survey.routines.select(question, options=options, index=0)
-    if action == 0:
-        connect_path_menu(ctx)
-    else:
-        pass
-
-
-def close_session(sync: SyncManager) -> None:
-    if sync.device is not None:
-        # FIXME: hardcode
-        sync.push_changes_to_app('.ui.activities.main.MainActivity')
+    Container:
+        styles:
+            border: '96'
+            corner: '96'
+"""
 
 
 def run_tui(db_path: str | None) -> None:
@@ -188,8 +134,51 @@ def run_tui(db_path: str | None) -> None:
 
         cli._unarchive(account_name, get_db())
 
-    ctx = Context()
+    def close_session() -> None:
+        """Run app activity:
+                default: opening an app on the phone
 
-    connect_menu(ctx)
+        Close terminal interface.
+        """
 
-    main_menu(ctx)
+        if sync.device is not None:
+            # FIXME: hardcode
+            sync.push_changes_to_app('.ui.activities.main.MainActivity')
+        sys.exit(0)
+
+    with YamlLoader() as loader:
+        loader.load(PYTERMGUI_CONFIG)
+
+    with WindowManager() as manager:
+        """Create the generic main aplication window."""
+
+        main_window = Window(width=60, box="DOUBLE")
+
+        window = (
+            (
+                main_window
+                + ""
+                + Label(
+                    "A CLI tool to manage the database of Bluecoins,\nan awesome budget planner for Android.",
+                )
+                + ""
+                + Container(
+                    "In development:",
+                    Label("- archive"),
+                    box="EMPTY_VERTICAL",
+                )
+                + ""
+                + Button('Convert', lambda *_: manager.add(create_currency_window(manager)))
+                + ""
+                + Button('Archive', lambda *_: manager.add(create_account_archive_window(manager)))
+                + ""
+                + Button('Unarchive', lambda *_: manager.add(create_account_unarchive_window(manager)))
+                + ""
+                + Button('Exit programm', lambda *_: close_session())
+                + ""
+            )
+            .set_title("[210 bold]Cluecoins")
+            .center()
+        )
+
+        manager.add(window)
